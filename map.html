@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Interactive - Surveillance ENISE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+     <script>
+        tailwind.config = {darkMode: 'media'}
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+             document.documentElement.classList.remove('dark')
+        }
+    </script>
+     <style>
+        :root, body, div, header, footer, section, main {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="bg-enise-blue text-white shadow-md sticky top-0 z-50">
+         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold">ENISE Environnement</a>
+            <div>
+                <a href="index.html" class="px-4 hover:text-gray-300">Accueil</a>
+                <a href="map.html" class="px-4 hover:text-gray-300 font-semibold">Carte Interactive</a>
+                <a href="dashboard.html" class="px-4 hover:text-gray-300">Tableau de Bord</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800 dark:text-gray-200">Carte Interactive des Capteurs</h1>
+        <p class="text-center text-gray-600 dark:text-gray-400 mb-6">Cliquez sur un marqueur pour voir les détails d'une salle.</p>
+
+        <!-- Map Container -->
+        <div id="map-container" class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+             <div id="loading-message" class="text-center py-4 text-gray-600 dark:text-gray-400">Chargement de la carte et des données...</div>
+             <div id="error-message" class="text-center py-4 text-red-600 dark:text-red-400 hidden"></div>
+             <!-- Map div -->
+             <div id="map"></div>
+             <!-- Legend -->
+            <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded">
+                <h3 class="font-semibold mb-2 text-lg text-gray-700 dark:text-gray-300">Légende Qualité d'Air</h3>
+                <div class="flex flex-wrap gap-4 items-center text-sm text-gray-600 dark:text-gray-400">
+                    <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-good"></span> Bon</div>
+                    <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-moderate"></span> Modéré</div>
+                    <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-poor"></span> Dégradé</div>
+                    <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-offline"></span> Hors ligne</div>
+                    <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-unknown"></span> Inconnu</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+     <footer class="bg-enise-blue text-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>© 2024 ENISE - Projet de Surveillance Environnementale.</p>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <!-- Custom Map JS -->
+    <script src="map.js"></script>
+
+</body>
+</html>

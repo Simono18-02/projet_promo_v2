@@ -1,0 +1,51 @@
+name: Update Sensor Data
+
+on:
+  schedule:
+    # Exécution toutes les 10 minutes (ajustez si besoin)
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Permet de déclencher manuellement depuis l'onglet Actions de GitHub
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write # Nécessaire pour pouvoir commiter/pusher
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Utiliser v4 ou plus récent
+        # Pas besoin de fetch-depth: 0 normalement
+
+      - name: Setup Python
+        uses: actions/setup-python@v5 # Utiliser v5 ou plus récent
+        with:
+          python-version: '3.9' # ou 3.10, 3.11 etc.
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Fetch sensor data and update JSON
+        run: |
+          # Assurez-vous que le chemin vers votre script est correct
+          python fetch_sensor_data.py
+          # Si votre script est dans .github/scripts par exemple:
+          # python .github/scripts/fetch_sensor_data.py
+        # PAS DE 'env: ESP32_IP: ...' ICI ! Le script lit config/sensors.json
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com' # Email recommandé
+          git add data.json # Ajoute le fichier de données mis à jour
+          # Optionnel: Ajoutez config/sensors.json si vous voulez que l'action commite ses changements
+          # git add config/sensors.json
+          # Commiter seulement si des changements ont été ajoutés (-a ne suffit pas, il faut vérifier le diff staged)
+          if ! git diff --staged --quiet; then
+            git commit -m "Update sensor data (Automated)" -m "[skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi

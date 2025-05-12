@@ -1,0 +1,5 @@
+{
+  "Salle_101": { "ip": "127.0.0.1", "name": "Salle 101 (Sim)", "location": {"x": 680, "y": 280} },
+  "Amphi_A": { "ip": "127.0.0.1", "name": "Amphi A (Sim)", "location": {"x": 685, "y": 390} },
+  "Labo_Info": { "ip": "127.0.0.1", "name": "Labo Info (Sim)", "location": {"x": 480, "y": 280} }
+}

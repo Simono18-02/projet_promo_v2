@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Surveillance ENISE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="style.css">
+     <script>
+        tailwind.config = {darkMode: 'media'}
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+             document.documentElement.classList.remove('dark')
+        }
+    </script>
+     <style>
+        :root, body, div, header, footer, section, main {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+         .chart-container {
+             position: relative;
+             height: 300px; /* Hauteur des graphiques */
+             width: 100%;
+         }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans">
+
+    <!-- Header -->
+     <header class="bg-enise-blue text-white shadow-md sticky top-0 z-50">
+         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold">ENISE Environnement</a>
+            <div>
+                <a href="index.html" class="px-4 hover:text-gray-300">Accueil</a>
+                <a href="map.html" class="px-4 hover:text-gray-300">Carte Interactive</a>
+                <a href="dashboard.html" class="px-4 hover:text-gray-300 font-semibold">Tableau de Bord</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-gray-200">Tableau de Bord Détaillé</h1>
+
+        <!-- Sensor Selector -->
+        <section class="mb-8 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+            <label for="sensor-select" class="block text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">Sélectionner une salle / un capteur :</label>
+            <select id="sensor-select" class="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-enise-blue">
+                <option value="">-- Charger les capteurs --</option>
+            </select>
+             <div id="loading-message" class="py-4 text-gray-600 dark:text-gray-400">Chargement des données...</div>
+             <div id="error-message" class="py-4 text-red-600 dark:text-red-400 hidden"></div>
+        </section>
+
+        <!-- Selected Sensor Details -->
+        <section id="sensor-details" class="mb-8 grid md:grid-cols-3 gap-4 hidden">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">Salle Sélectionnée</h3>
+                <p id="details-name" class="text-2xl font-bold text-enise-blue dark:text-blue-300">...</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">Statut Actuel</h3>
+                 <p id="details-status" class="text-2xl font-bold">...</p> <!-- La couleur sera définie par JS -->
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">Dernière Lecture</h3>
+                 <p id="details-timestamp" class="text-xl font-semibold">...</p>
+            </div>
+             <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow col-span-1 md:col-span-1">
+                 <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">CO2 Actuel</h3>
+                 <p id="details-co2" class="text-2xl font-bold">... <span class="text-lg">ppm</span></p>
+             </div>
+             <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow col-span-1 md:col-span-1">
+                 <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">TVOC Actuel</h3>
+                 <p id="details-tvoc" class="text-2xl font-bold">... <span class="text-lg">ppb</span></p>
+             </div>
+              <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow col-span-1 md:col-span-1 flex items-center justify-center">
+                  <div id="details-quality-indicator" class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-inner quality-unknown">
+                      ?
+                  </div>
+              </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section id="charts-section" class="hidden">
+             <div class="grid lg:grid-cols-2 gap-8">
+                 <!-- CO2 Chart -->
+                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">Historique CO2 (ppm)</h2>
+                    <div class="chart-container">
+                        <canvas id="co2Chart"></canvas>
+                    </div>
+                </div>
+                 <!-- TVOC Chart -->
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">Historique TVOC (ppb)</h2>
+                    <div class="chart-container">
+                         <canvas id="tvocChart"></canvas>
+                    </div>
+                 </div>
+             </div>
+        </section>
+
+         <!-- Legend -->
+        <section class="mt-8 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+             <h3 class="font-semibold mb-2 text-lg text-gray-700 dark:text-gray-300">Légende Qualité d'Air</h3>
+             <div class="flex flex-wrap gap-4 items-center text-sm text-gray-600 dark:text-gray-400">
+                 <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-good"></span> Bon (CO2 ≤ 800, TVOC ≤ 100)</div>
+                 <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-moderate"></span> Modéré (CO2 ≤ 1000, TVOC ≤ 150)</div>
+                 <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-poor"></span> Dégradé</div>
+                 <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-offline"></span> Hors ligne</div>
+                 <div class="flex items-center"><span class="w-4 h-4 rounded-full mr-2 quality-unknown"></span> Inconnu/N/A</div>
+             </div>
+         </section>
+
+
+    </main>
+
+    <!-- Footer -->
+     <footer class="bg-enise-blue text-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>© 2024 ENISE - Projet de Surveillance Environnementale.</p>
+        </div>
+    </footer>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script> <!-- Pour l'axe temps -->
+     <script src="https://cdn.jsdelivr.net/npm/date-fns/"></script> <!-- Dépendance pour l'adaptateur --> <!-- Attention: Vérifier si cette ligne est nécessaire ou si l'adaptateur l'inclut -->
+
+    <!-- Custom Dashboard JS -->
+    <script src="dashboard.js"></script>
+
+</body>
+</html>

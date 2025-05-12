@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Surveillance Environnementale ENISE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'media', // or 'class'
+            theme: {
+                extend: {
+                    colors: {
+                        // Vous pouvez personnaliser vos couleurs ici si besoin
+                        'enise-blue': '#004080',
+                    }
+                }
+            }
+        }
+        // Simple script pour la détection du mode sombre/clair
+         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <style>
+         /* Ajoute une transition douce pour le changement de thème */
+        :root, body, div, header, footer, section, main {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="bg-enise-blue text-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold">ENISE Environnement</a>
+            <div>
+                <a href="index.html" class="px-4 hover:text-gray-300 font-semibold">Accueil</a>
+                <a href="map.html" class="px-4 hover:text-gray-300">Carte Interactive</a>
+                <a href="dashboard.html" class="px-4 hover:text-gray-300">Tableau de Bord</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+
+        <!-- Hero Section -->
+        <section class="text-center bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg mb-12">
+            <h1 class="text-4xl font-bold text-enise-blue dark:text-blue-300 mb-4">Surveillance de Votre Environnement</h1>
+            <p class="text-xl text-gray-700 dark:text-gray-300 mb-6">
+                Visualisez en temps réel la qualité de l'air (CO2 & COV) dans les locaux de l'ENISE.
+            </p>
+            <a href="map.html"
+               class="bg-enise-blue hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 inline-block">
+                Explorer la Carte Interactive
+            </a>
+             <a href="dashboard.html"
+               class="ml-4 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold py-3 px-6 rounded-lg transition duration-300 inline-block">
+                Voir le Tableau de Bord
+            </a>
+        </section>
+
+        <!-- Feature Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-center mb-8 text-gray-800 dark:text-gray-200">Fonctionnalités Clés</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl mb-4">🌡️</div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">Temps Réel</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Données CO2 et COV mises à jour régulièrement.</p>
+                </div>
+                 <!-- Feature Card 2 -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl mb-4">🗺️</div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">Carte Interactive</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Localisez les capteurs et visualisez leur état d'un coup d'œil.</p>
+                </div>
+                <!-- Feature Card 3 -->
+               <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">Historique Détaillé</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Analysez l'évolution de la qualité de l'air grâce aux graphiques.</p>
+                </div>
+                 <!-- Feature Card 4 -->
+                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl mb-4">💡</div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">Design Moderne</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Interface responsive avec mode sombre/clair automatique.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold mb-4 text-gray-800 dark:text-gray-200">À Propos du Projet</h2>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                Ce système de surveillance environnementale a été développé dans le cadre d'un projet étudiant à l'ENISE. Utilisant des microcontrôleurs ESP32 connectés en Wi-Fi et des capteurs CCS811, il collecte les données de CO2 et de Composés Organiques Volatils Totaux (COVT) dans différentes salles. Les données sont ensuite centralisées, traitées et stockées via GitHub Actions, puis rendues accessibles via cette interface web dynamique. L'objectif est de fournir une information transparente sur la qualité de l'environnement intérieur et de sensibiliser aux enjeux de la qualité de l'air.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-enise-blue text-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>© 2024 ENISE - Projet de Surveillance Environnementale. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Pas de JS spécifique pour la page d'accueil pour l'instant -->
+
+</body>
+</html>
