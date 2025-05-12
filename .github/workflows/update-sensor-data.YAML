@@ -2,25 +2,24 @@ name: Update Sensor Data
 
 on:
   schedule:
-    # Exécution toutes les 10 minutes (ajustez si besoin)
+    # Exécution toutes les 10 minutes
     - cron: '*/10 * * * *'
-  workflow_dispatch: # Permet de déclencher manuellement depuis l'onglet Actions de GitHub
+  workflow_dispatch:  # Permet de déclencher manuellement depuis l'onglet Actions de GitHub
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
     permissions:
-        contents: write # Nécessaire pour pouvoir commiter/pusher
+      contents: write  # Nécessaire pour pouvoir commiter/pusher
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Utiliser v4 ou plus récent
-        # Pas besoin de fetch-depth: 0 normalement
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v5 # Utiliser v5 ou plus récent
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9' # ou 3.10, 3.11 etc.
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -29,20 +28,20 @@ jobs:
 
       - name: Fetch sensor data and update JSON
         run: |
-          # Assurez-vous que le chemin vers votre script est correct
-          python fetch_sensor_data.py
-          # Si votre script est dans .github/scripts par exemple:
-          # python .github/scripts/fetch_sensor_data.py
-        # PAS DE 'env: ESP32_IP: ...' ICI ! Le script lit config/sensors.json
+          # Utilisation du chemin absolu pour être sûr
+          python $GITHUB_WORKSPACE/fetch_sensor_data.py
+        env:
+          # Utilisation de variables d'environnement pour la configuration
+          ESP32_PORT: 5000
+          SENSOR_TIMEOUT: 5
 
       - name: Commit and push if changed
         run: |
           git config --global user.name 'GitHub Actions Bot'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com' # Email recommandé
-          git add data.json # Ajoute le fichier de données mis à jour
-          # Optionnel: Ajoutez config/sensors.json si vous voulez que l'action commite ses changements
-          # git add config/sensors.json
-          # Commiter seulement si des changements ont été ajoutés (-a ne suffit pas, il faut vérifier le diff staged)
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data.json  # Ajoute le fichier de données mis à jour
+          
+          # Commiter seulement si des changements ont été ajoutés
           if ! git diff --staged --quiet; then
             git commit -m "Update sensor data (Automated)" -m "[skip ci]"
             git push
