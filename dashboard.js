@@ -4,7 +4,7 @@
 // URL pour récupérer les données
 const DATA_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'data.json'  // Utiliser un chemin relatif en développement local
-    : 'https://raw.githubusercontent.com/Simono18-02/Projet-de-promo/main/data.json';  // URL absolue en production
+    : 'https://raw.githubusercontent.com/Simono18-02/projet_promo_v2/main/data.json';  // URL absolue en production
 
 // Seuils de qualité d'air
 const QUALITY_THRESHOLDS = {
