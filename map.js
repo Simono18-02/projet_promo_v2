@@ -2,7 +2,7 @@
 
 // --- Configuration ---
 // REMPLACEZ par votre URL réelle de data.json sur GitHub Raw
-const DATA_URL = 'https://raw.githubusercontent.com/Simono18-02/Projet-de-promo/main/data.json';
+const DATA_URL = 'https://raw.githubusercontent.com/Simono18-02/projet_promo_v2/main/data.json';
 // REMPLACEZ par le chemin de votre image de plan
 const MAP_IMAGE_URL = 'plan.png';
 // REMPLACEZ par les dimensions réelles (largeur, hauteur) de votre image plan.png en pixels
