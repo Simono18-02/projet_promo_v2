@@ -1,1 +1,56 @@
-{"reading":{"timestamp":"61079","co2":400,"tvoc":0}}
+{
+  "lastUpdateTimestamp": "2025-05-12T10:30:00Z",
+  "sensors": {
+    "Salle_101": {
+      "name": "Salle 101 (Sim)",
+      "location": {"x": 680, "y": 280},
+      "status": "online",
+      "lastReading": {
+        "timestamp": "2025-05-12T10:30:00Z",
+        "co2": 400,
+        "tvoc": 0
+      },
+      "history": [
+        {
+          "timestamp": "2025-05-12T10:30:00Z",
+          "co2": 400,
+          "tvoc": 0
+        }
+      ]
+    },
+    "Amphi_A": {
+      "name": "Amphi A (Sim)",
+      "location": {"x": 685, "y": 390},
+      "status": "online",
+      "lastReading": {
+        "timestamp": "2025-05-12T10:30:00Z",
+        "co2": 450,
+        "tvoc": 5
+      },
+      "history": [
+        {
+          "timestamp": "2025-05-12T10:30:00Z",
+          "co2": 450,
+          "tvoc": 5
+        }
+      ]
+    },
+    "Labo_Info": {
+      "name": "Labo Info (Sim)",
+      "location": {"x": 480, "y": 280},
+      "status": "online",
+      "lastReading": {
+        "timestamp": "2025-05-12T10:30:00Z",
+        "co2": 550,
+        "tvoc": 15
+      },
+      "history": [
+        {
+          "timestamp": "2025-05-12T10:30:00Z",
+          "co2": 550,
+          "tvoc": 15
+        }
+      ]
+    }
+  }
+}
